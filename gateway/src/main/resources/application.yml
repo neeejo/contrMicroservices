@@ -1,0 +1,62 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gatewayservice
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+            allowedHeaders:
+              - "*"
+      routes:
+        - id: authservice-auth
+          uri: lb://authservice
+          predicates:
+            - Path=/auth/**
+        - id: authservice-user
+          uri: lb://authservice
+          predicates:
+            - Path=/user/**
+        - id: anagservice-anag
+          uri: lb://anagservice
+          predicates:
+            - Path=/anag/**
+        - id: anagservice-immagineuser
+          uri: lb://anagservice
+          predicates:
+            - Path=/immagineuser/**
+        - id: anagservice-neg
+          uri: lb://anagservice
+          predicates:
+            - Path=/neg/**
+        - id: prodottoservice-prodotto
+          uri: lb://prodottoservice
+          predicates:
+            - Path=/prodotto/**
+        - id: prodottoservice-ordine
+          uri: lb://prodottoservice
+          predicates:
+            - Path=/ordine/**
+        - id: prodottoservice-immagine
+          uri: lb://prodottoservice
+          predicates:
+            - Path=/immagine/**
+        - id: prodottoservice-ordineitems
+          uri: lb://prodottoservice
+          predicates:
+            - Path=/ordineitems/**
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
